@@ -1,0 +1,13 @@
+function (callback) {
+    var cmd = `${elmExecutable} '${file}' --output test.js`;
+    exec(cmd, function(error, stdout, stderr) {
+      if (stderr) {
+        err = stderr.replace(/\n/g,"\\n")
+                    .replace(/"/g, '\\"')
+        callback(null, `document.write("${err}")`);
+      } else {
+        callback(null, fs.readFileSync('test.js', 'utf-8'))
+        fs.unlink('test.js')
+      }
+    });
+  }
